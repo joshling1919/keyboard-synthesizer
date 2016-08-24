@@ -28,8 +28,8 @@ const validKeys = ['a', 's', 'd', 'f', 'g'];
 const keyMap = {};
 
 NOTE_NAMES.forEach((note,idx) => {
-  keyMap[validKeys[idx]] = TONES[note];
+  keyMap[validKeys[idx]] = note;
 });
 
 
-export {validKeys, NotesReducer};
+export {validKeys, NotesReducer, keyMap};

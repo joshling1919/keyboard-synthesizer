@@ -1,0 +1,17 @@
+.key {
+  display: block;
+  background: lightgrey;
+  float: left;
+  border: 1px solid black;
+  height: 200px;
+  width: 100px;
+  text-align: center;
+}
+
+.clicked {
+  background: yellow;
+}
+
+ul {
+  text-decoration-style: none;
+}

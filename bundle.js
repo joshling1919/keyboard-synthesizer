@@ -22410,7 +22410,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.NotesReducer = exports.validKeys = undefined;
+	exports.keyMap = exports.NotesReducer = exports.validKeys = undefined;
 	
 	var _note_actions = __webpack_require__(191);
 	
@@ -22447,11 +22447,12 @@
 	var keyMap = {};
 	
 	_tones.NOTE_NAMES.forEach(function (note, idx) {
-	  keyMap[validKeys[idx]] = _tones.TONES[note];
+	  keyMap[validKeys[idx]] = note;
 	});
 	
 	exports.validKeys = validKeys;
 	exports.NotesReducer = NotesReducer;
+	exports.keyMap = keyMap;
 
 /***/ },
 /* 191 */
@@ -23286,6 +23287,14 @@
 	
 	var _notes_reducer = __webpack_require__(190);
 	
+	var Reducer = _interopRequireWildcard(_notes_reducer);
+	
+	var _note_key = __webpack_require__(206);
+	
+	var _note_key2 = _interopRequireDefault(_note_key);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -23305,17 +23314,20 @@
 	    _this.notes = _tones.NOTE_NAMES.map(function (noteName) {
 	      return new _note2.default(_tones.TONES[noteName]);
 	    });
+	    // this.keyMap = Reducer.keyMap;
 	    return _this;
 	  }
 	
 	  _createClass(Synth, [{
 	    key: 'onKeyDown',
 	    value: function onKeyDown(e) {
+	      (0, _jquery2.default)('#' + Reducer.keyMap[e.key]).addClass("clicked");
 	      this.props.keyPressed(e.key);
 	    }
 	  }, {
 	    key: 'onKeyUp',
 	    value: function onKeyUp(e) {
+	      (0, _jquery2.default)('#' + Reducer.keyMap[e.key]).removeClass("clicked");
 	      this.props.keyReleased(e.key);
 	    }
 	  }, {
@@ -23334,41 +23346,29 @@
 	    key: 'playNotes',
 	    value: function playNotes() {
 	      var synth = this;
-	      // this.notes is all the notes = notes -> freq
-	      // this.props.notes is our notes = letters -> freq
 	
-	      // let allFreq = this.notes.map(note => note.oscillatorNode.frequency.value);
-	      // let ourFreq = this.props.notes.map(note => NotesReducer.keyMap[note]);
-	      //
-	      // debugger
-	
-	      _notes_reducer.validKeys.forEach(function (noteName, idx) {
+	      Reducer.validKeys.forEach(function (noteName, idx) {
 	        if (synth.props.notes.indexOf(noteName) !== -1) {
 	          synth.notes[idx].start();
 	        } else {
 	          synth.notes[idx].stop();
 	        }
 	      });
-	
-	      // this.notes.forEach((note, idx) => {
-	      //   for (let i = 0; i < synth.props.notes.length; i++) {
-	      //
-	      //   }
-	      //   if(note.oscillatorNode.frequency.value === NotesReducer.keyMap[synth.props.notes[idx]]){
-	      //     note.start();
-	      //   } else {
-	      //     note.stop();
-	      //   }
-	      // });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
 	      this.playNotes();
+	      var keys = Object.keys(_tones.TONES).map(function (tone) {
+	        return _react2.default.createElement(_note_key2.default, { key: tone, tone: tone });
+	      });
+	
 	      return _react2.default.createElement(
 	        'ul',
 	        null,
-	        'keyboard'
+	        ' ',
+	        keys,
+	        ' '
 	      );
 	    }
 	  }]);
@@ -33496,6 +33496,33 @@
 	return jQuery;
 	} );
 
+
+/***/ },
+/* 206 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var noteKey = function noteKey(_ref) {
+	  var tone = _ref.tone;
+	  return _react2.default.createElement(
+	    "li",
+	    { className: "key", id: tone, key: tone },
+	    tone
+	  );
+	};
+	
+	exports.default = noteKey;
 
 /***/ }
 /******/ ]);
